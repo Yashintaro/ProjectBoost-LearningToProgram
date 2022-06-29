@@ -8,11 +8,14 @@ public class Movement : MonoBehaviour
     [SerializeField] float mainThrust = 0f;
     [SerializeField] float rotationThrust = 0f;
     Rigidbody rb;
+    AudioSource audioSource; 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
     }
 
     // Update is called once per frame
@@ -22,12 +25,21 @@ public class Movement : MonoBehaviour
         ProcessRotation();
     }
 
-    //Thrusts boosters on the rocketship when space is held
+    //Thrusts boosters on the rocketship when space is held + Thurster Sound Activates
     void ProcessThrust()
     {
         if (Input.GetKey(KeyCode.Space))
         {
             rb.AddRelativeForce(Vector3.up * Time.deltaTime * mainThrust);
+
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+        else
+        {
+            audioSource.Stop();
         }
     }
 
